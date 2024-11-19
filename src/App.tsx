@@ -4,7 +4,7 @@ import NewTask from "./components/NewTask";
 function App() {
 
   return (
-    <main className="min-h-screen place-content-center flex flex-col gap-10">
+    <main className="min-h-screen place-content-center gap-12 flex flex-col p-8">
       <TaskList />
       <NewTask />
     </main>

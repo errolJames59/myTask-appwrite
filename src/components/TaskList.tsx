@@ -26,26 +26,26 @@ const TaskList = () => {
     const unsubscribe = client.subscribe(
       `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`,
       (response) => {
-      const eventType = response.events[0];
+        const eventType = response.events[0];
 
-      const changedTask = response.payload as Task;
+        const changedTask = response.payload as Task;
 
-      if (eventType.includes("create")) {
-        setTasks((prevTask) => [changedTask, ...prevTask]);
+        if (eventType.includes("create")) {
+          setTasks((prevTask) => [changedTask, ...prevTask]);
+        }
+
+        if (eventType.includes("delete")) {
+          setTasks((prevTask) =>
+            prevTask.filter((task) => task.$id !== changedTask.$id)
+          );
+        }
       }
-
-      if (eventType.includes("delete")) {
-        setTasks((prevTask) =>
-          prevTask.filter((task) => task.$id !== changedTask.$id)
-        );
-      }
-    });
+    );
 
     fetchTasks();
     return () => {
       unsubscribe();
     };
-    
   }, []); // Empty dependency array to run only once
 
   if (loading) {
@@ -66,16 +66,19 @@ const TaskList = () => {
   return (
     <>
       <section>
-        <ul className="flex flex-col gap-4 w-3/6 mx-auto text-center">
+        <ul className="flex flex-col gap-4 text-center">
           {tasks.map((task) => (
             <li
               key={task.$id}
-              className="bg-white flex justify-between p-4 rounded-lg shadow-sm hover:animate-pulse duration-500"
+              className="bg-white w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-sm hover:animate-pulse duration-500 justify-between"
             >
               <p>{task.content}</p>
 
               <button onClick={() => handleDelete(task.$id)}>
-                <span role="img" aria-label="Delete">
+                <span
+                  role="img"
+                  aria-label="Delete"
+                >
                   ❌
                 </span>
               </button>
