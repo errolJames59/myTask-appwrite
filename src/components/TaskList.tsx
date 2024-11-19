@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import { getTasks } from "../actions/TaskActions";
+import { deleteTask, getTasks } from "../actions/TaskActions";
+import { DATABASE_ID, COLLECTION_ID, client } from "../utils/appwrite";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
   const [loading, setLoading] = useState(true); // State for loading indicator
+
+  const handleDelete = async (taskID: string) => {
+    deleteTask(taskID);
+  };
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -18,11 +23,44 @@ const TaskList = () => {
       }
     };
 
+    const unsubscribe = client.subscribe(
+      `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`,
+      (response) => {
+      const eventType = response.events[0];
+
+      const changedTask = response.payload as Task;
+
+      if (eventType.includes("create")) {
+        setTasks((prevTask) => [changedTask, ...prevTask]);
+      }
+
+      if (eventType.includes("delete")) {
+        setTasks((prevTask) =>
+          prevTask.filter((task) => task.$id !== changedTask.$id)
+        );
+      }
+    });
+
     fetchTasks();
+    return () => {
+      unsubscribe();
+    };
+    
   }, []); // Empty dependency array to run only once
 
   if (loading) {
-    return <div>Loading tasks...</div>;
+    return (
+      <>
+        <section className="flex mx-auto items-center">
+          <img
+            src="/loading-svgrepo-com.svg"
+            className="h-10 animate-spin"
+            alt=""
+          />
+          <p>Loading...</p>
+        </section>
+      </>
+    );
   }
 
   return (
@@ -35,7 +73,8 @@ const TaskList = () => {
               className="bg-white flex justify-between p-4 rounded-lg shadow-sm hover:animate-pulse duration-500"
             >
               <p>{task.content}</p>
-              <button>
+
+              <button onClick={() => handleDelete(task.$id)}>
                 <span role="img" aria-label="Delete">
                   ❌
                 </span>

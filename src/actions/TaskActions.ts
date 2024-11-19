@@ -36,3 +36,12 @@ export async function getTasks(): Promise<Task[]> {
 
     return tasks;
 }
+
+/* DELETING A DOCUMENT */
+export async function deleteTask(taskID: string) {
+    await databases.deleteDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        taskID
+    )
+}

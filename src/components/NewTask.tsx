@@ -9,6 +9,7 @@ const TaskList = () => {
 
     await addTask(tasks);
     setTasks("");
+    
   };
 
   return (
