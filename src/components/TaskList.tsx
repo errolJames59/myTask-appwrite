@@ -15,6 +15,7 @@ const TaskList = () => {
     deleteTask(taskID);
     playOnDelete();
     toast({
+      variant: "destructive",
       title: "Task Deleted",
       description: "Task has been deleted successfully",
     })
