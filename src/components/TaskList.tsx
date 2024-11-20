@@ -3,15 +3,21 @@ import { deleteTask, getTasks } from "../actions/TaskActions";
 import { DATABASE_ID, COLLECTION_ID, client } from "../lib/appwrite";
 import useSound from "use-sound";
 import onDeleteSfx from "../sounds/onDelete.mp3";
+import { useToast } from "../hooks/use-toast";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [playOnDelete] = useSound(onDeleteSfx);
+  const {toast} = useToast();
 
   const handleDelete = async (taskID: string) => {
     deleteTask(taskID);
     playOnDelete();
+    toast({
+      title: "Task Deleted",
+      description: "Task has been deleted successfully",
+    })
   };
 
   useEffect(() => {
