@@ -27,7 +27,7 @@ const TaskList: React.FC<TaskListProps> = ({className}) => {
             value={tasks}
             onChange={(e) => setTasks(e.target.value)}
             placeholder="Write task..."
-            className="h-28 p-4 bg-white dark:bg-background resize-none border-b-2 focus:outline-none"
+            className="h-24 p-4 bg-white dark:bg-background resize-none border-b-2 focus:outline-none"
             required
             
           />
