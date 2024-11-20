@@ -55,13 +55,15 @@ const TaskList = () => {
   if (loading) {
     return (
       <>
-        <section className="flex mx-auto items-center">
-          <img
-            src="/loading-svgrepo-com.svg"
-            className="h-10 animate-spin"
-            alt=""
-          />
-          <p>Loading...</p>
+        <section className="flex h-screen">
+          <div className="absolute w-full flex place-content-center items-center">
+            <img
+              src="/loading-svgrepo-com.svg"
+              className="h-10 animate-spin"
+              alt=""
+            />
+            <p>Loading...</p>
+          </div>
         </section>
       </>
     );
@@ -79,10 +81,7 @@ const TaskList = () => {
               <p className="w-5/6">{task.content}</p>
 
               <button onClick={() => handleDelete(task.$id)}>
-                <span
-                  role="img"
-                  aria-label="Delete"
-                >
+                <span role="img" aria-label="Delete">
                   ❌
                 </span>
               </button>
