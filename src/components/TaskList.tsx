@@ -57,7 +57,7 @@ const TaskList = () => {
       <>
         <section className="flex mx-auto items-center">
           <img
-            src="/src/assets/loading-svgrepo-com.svg"
+            src="/loading-svgrepo-com.svg"
             className="h-10 animate-spin"
             alt=""
           />
