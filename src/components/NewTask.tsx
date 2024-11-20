@@ -21,17 +21,17 @@ const TaskList: React.FC<TaskListProps> = ({className}) => {
 
   return (
     <>
-      <section className={`mx-auto w-5/6 md:w-3/6 ${className}`}>
+      <section className={`mx-auto w-full md:w-3/6 ${className}`}>
         <form onSubmit={handleAddTask} className="flex flex-col gap-4 p-4 border-2 rounded-lg shadow-md bg-white dark:bg-background">
           <textarea
             value={tasks}
             onChange={(e) => setTasks(e.target.value)}
             placeholder="Write task..."
-            className="w-full h-28 p-4 bg-white dark:bg-background resize-none border-b-2 focus:outline-none"
+            className="h-28 p-4 bg-white dark:bg-background resize-none border-b-2 focus:outline-none"
             required
             
           />
-          <button className="bg-green-800 text-white px-4 py-2 rounded-lg w-3/6 md:w-1/6 mx-auto" type="submit">Add Task</button>
+          <button className="bg-green-800 text-white px-4 py-2 rounded-lg md:w-1/6 mx-auto" type="submit">Add Task</button>
         </form>
       </section>
     </>
