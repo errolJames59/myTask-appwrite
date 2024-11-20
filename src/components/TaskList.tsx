@@ -70,13 +70,13 @@ const TaskList = () => {
   return (
     <>
       <section>
-        <ul className="grid gap-4 text-center">
+        <ul className="grid gap-4">
           {tasks.map((task) => (
             <li
               key={task.$id}
-              className="border-[1px] w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-sm hover:scale-[102%] transition-all duration-300 justify-between"
+              className="border-[1px] w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
             >
-              <p>{task.content}</p>
+              <p className="w-5/6">{task.content}</p>
 
               <button onClick={() => handleDelete(task.$id)}>
                 <span

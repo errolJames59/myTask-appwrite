@@ -7,9 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import { useTheme } from "../lib/theme-provider"
+import useSound from "use-sound";
+import switchThemeSfx from "../sounds/switchTheme.mp3"
 
 export function ModeToggle() {
   const { setTheme } = useTheme()
+  const [play] = useSound(switchThemeSfx, { volume: 0.5 });
 
   return (
     <DropdownMenu>
@@ -21,13 +24,13 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => { setTheme("light"); play(); }}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => {setTheme("dark"); play(); }}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => {setTheme("system"); play();}}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>
