@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { deleteTask, getTasks } from "../actions/TaskActions";
-import { DATABASE_ID, COLLECTION_ID, client } from "../utils/appwrite";
+import { DATABASE_ID, COLLECTION_ID, client } from "../lib/appwrite";
+import useSound from "use-sound";
+import onDeleteSfx from "../sounds/onDelete.mp3";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
   const [loading, setLoading] = useState(true); // State for loading indicator
+  const [playOnDelete] = useSound(onDeleteSfx);
 
   const handleDelete = async (taskID: string) => {
     deleteTask(taskID);
+    playOnDelete();
   };
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const TaskList = () => {
       <>
         <section className="flex mx-auto items-center">
           <img
-            src="/loading-svgrepo-com.svg"
+            src="/src/assets/loading-svgrepo-com.svg"
             className="h-10 animate-spin"
             alt=""
           />
@@ -66,11 +70,11 @@ const TaskList = () => {
   return (
     <>
       <section>
-        <ul className="flex flex-col gap-4 text-center">
+        <ul className="grid gap-4 text-center">
           {tasks.map((task) => (
             <li
               key={task.$id}
-              className="bg-white w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-sm hover:animate-pulse duration-500 justify-between"
+              className="border-[1px] w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-sm hover:scale-[102%] transition-all duration-300 justify-between"
             >
               <p>{task.content}</p>
 

@@ -1,5 +1,5 @@
-import { databases } from "../utils/appwrite";
-import { DATABASE_ID, COLLECTION_ID } from "../utils/appwrite";
+import { databases } from "../lib/appwrite";
+import { DATABASE_ID, COLLECTION_ID } from "../lib/appwrite";
 import { ID } from "appwrite";
 
 /* ADDING A DOCUMENT */
