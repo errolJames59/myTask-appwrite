@@ -74,7 +74,7 @@ const TaskList = () => {
           {tasks.map((task) => (
             <li
               key={task.$id}
-              className="border-[1px] w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
+              className="border-[1px] w-5/6 md:w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
             >
               <p className="w-5/6">{task.content}</p>
 
