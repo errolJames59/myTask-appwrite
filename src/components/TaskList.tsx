@@ -22,6 +22,7 @@ const TaskList = () => {
   };
 
   useEffect(() => {
+    
     const fetchTasks = async () => {
       try {
         const fetchedTasks = await getTasks();
@@ -42,7 +43,7 @@ const TaskList = () => {
         const changedTask = response.payload as Task;
 
         if (eventType.includes("create")) {
-          setTasks((prevTask) => [changedTask, ...prevTask]);
+          setTasks((prevTask) => [...prevTask, changedTask]);
         }
 
         if (eventType.includes("delete")) {
@@ -79,7 +80,7 @@ const TaskList = () => {
   return (
     <>
       <section>
-        <ul className="grid gap-4">
+        <ul className="flex gap-4 flex-col-reverse">
           {tasks.map((task) => (
             <li
               key={task.$id}
