@@ -45,3 +45,14 @@ export async function deleteTask(taskID: string) {
         taskID
     )
 }
+
+/* UPDATING A DOCUMENT */
+export async function updateTask(taskID: string, content: string) {
+    const updateTask = {content: content}
+    await databases.updateDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        taskID,
+        updateTask
+    )
+}

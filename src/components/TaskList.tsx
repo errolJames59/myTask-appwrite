@@ -4,12 +4,19 @@ import { DATABASE_ID, COLLECTION_ID, client } from "../lib/appwrite";
 import useSound from "use-sound";
 import onDeleteSfx from "../sounds/onDelete.mp3";
 import { useToast } from "../hooks/use-toast";
+import UpdateTask from "./UpdateTask";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]); // State to store tasks
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [playOnDelete] = useSound(onDeleteSfx);
-  const {toast} = useToast();
+  const { toast } = useToast();
+
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null); // Track the task being edited
+
+  const handleEditToggle = (taskID: string) => {
+    setEditingTaskId((prev) => (prev === taskID ? null : taskID)); // Toggle the edit state for the selected task
+  };
 
   const handleDelete = async (taskID: string) => {
     deleteTask(taskID);
@@ -18,16 +25,15 @@ const TaskList = () => {
       variant: "destructive",
       title: "Task Deleted",
       description: "Task has been deleted successfully",
-    })
+    });
   };
 
   useEffect(() => {
-    
     const fetchTasks = async () => {
       try {
         const fetchedTasks = await getTasks();
         setTasks(fetchedTasks);
-        console.log(tasks);
+//        console.log(fetchedTasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {
@@ -49,6 +55,14 @@ const TaskList = () => {
         if (eventType.includes("delete")) {
           setTasks((prevTask) =>
             prevTask.filter((task) => task.$id !== changedTask.$id)
+          );
+        }
+
+        if (eventType.includes("update")) {
+          setTasks((prevTask) =>
+            prevTask.map((task) =>
+              task.$id === changedTask.$id ? changedTask : task
+            )
           );
         }
       }
@@ -84,15 +98,38 @@ const TaskList = () => {
           {tasks.map((task) => (
             <li
               key={task.$id}
-              className="border-[1px] w-5/6 md:w-3/6 flex gap-4 p-4 mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
+              className="border-[1px] w-5/6 md:w-3/6 flex flex-col mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
             >
-              <p className="w-5/6">{task.content}</p>
+              <div className="flex gap-4 p-4">
+                <p className="w-5/6">{task.content}</p>
 
-              <button onClick={() => handleDelete(task.$id)}>
-                <span role="img" aria-label="Delete">
-                  ❌
+              {/* Edit Button */}
+              <button onClick={() => handleEditToggle(task.$id)}>
+                <span>
+                  <span role="img" aria-label="Edit">
+                    ✏️
+                  </span>
                 </span>
               </button>
+
+                <button onClick={() => handleDelete(task.$id)}>
+                  <span role="img" aria-label="Delete">
+                    ❌
+                  </span>
+                </button>
+              </div>
+
+              {/* Conditional Rendering of <UpdateTask /> */}
+              {editingTaskId === task.$id && (
+                <div className="w-full rounded-b-lg p-4 mt-2">
+                  <UpdateTask
+                    taskID={task.$id}
+                    content={task.content}
+                    setEditingTaskId={setEditingTaskId}
+                    className="w-5/6 mx-auto text-sm"
+                  />
+                </div>
+              )}
             </li>
           ))}
         </ul>

@@ -11,7 +11,7 @@ function App() {
           <ModeToggle className="flex justify-end"/>
         </div>
         <TaskList />
-        <NewTask className="sticky bottom-3"/>
+        <NewTask className="sticky bottom-3 mx-auto w-full md:w-3/6"/>
         <Toaster />
       </main>
     </>
