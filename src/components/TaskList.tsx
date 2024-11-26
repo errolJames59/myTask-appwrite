@@ -33,7 +33,7 @@ const TaskList = () => {
       try {
         const fetchedTasks = await getTasks();
         setTasks(fetchedTasks);
-//        console.log(fetchedTasks);
+        //        console.log(fetchedTasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {
@@ -98,19 +98,34 @@ const TaskList = () => {
           {tasks.map((task) => (
             <li
               key={task.$id}
+              id={task.$id}
               className="border-[1px] w-5/6 md:w-3/6 flex flex-col mx-auto rounded-lg shadow-md hover:scale-[102%] transition-all duration-300 justify-between"
             >
               <div className="flex gap-4 p-4">
                 <p className="w-5/6">{task.content}</p>
 
-              {/* Edit Button */}
-              <button onClick={() => handleEditToggle(task.$id)}>
-                <span>
-                  <span role="img" aria-label="Edit">
-                    ✏️
+                {/* Edit Button */}
+                <button
+                  onClick={() => {
+                    handleEditToggle(task.$id); // Toggle the edit mode
+                    setTimeout(() => {
+                      const taskElement = document.getElementById(task.$id); // Find the task element by ID
+                      if (taskElement) {
+                        // Scroll smoothly to the task if it exists
+                        taskElement.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }
+                    }, 100); // Delay to ensure the DOM is updated
+                  }}
+                >
+                  <span>
+                    <span role="img" aria-label="Edit">
+                      ✏️
+                    </span>
                   </span>
-                </span>
-              </button>
+                </button>
 
                 <button onClick={() => handleDelete(task.$id)}>
                   <span role="img" aria-label="Delete">
@@ -121,13 +136,19 @@ const TaskList = () => {
 
               {/* Conditional Rendering of <UpdateTask /> */}
               {editingTaskId === task.$id && (
-                <div className="w-full rounded-b-lg p-4 mt-2">
+                <div className="w-[100%] rounded-b-lg mt-2">
                   <UpdateTask
                     taskID={task.$id}
                     content={task.content}
                     setEditingTaskId={setEditingTaskId}
-                    className="w-5/6 mx-auto text-sm"
+                    className="mx-auto text-sm"
                   />
+                  <button
+                    className="mx-auto flex px-4 py-2 hover:font-semibold"
+                    onClick={() => setEditingTaskId(null)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               )}
             </li>

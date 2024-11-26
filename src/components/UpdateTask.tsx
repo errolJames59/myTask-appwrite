@@ -70,7 +70,7 @@ const UpdateTask: React.FC<UpdateTaskProps> = ({
       <form
         ref={formRef}
         onSubmit={handleAddTask}
-        className="flex flex-col gap-4 p-4 border-2 rounded-lg shadow-md bg-white dark:bg-background"
+        className="flex flex-col gap-4 p-4 border-t-2 bg-white dark:bg-background"
       >
         <textarea
           value={tasks}
@@ -79,7 +79,7 @@ const UpdateTask: React.FC<UpdateTaskProps> = ({
           required
         />
         <button
-          className="bg-green-800 text-white px-4 py-2 rounded-lg mx-auto"
+          className=" text-green-800 border-green-800 border-[1px] px-4 py-2 rounded-lg mx-auto"
           type="submit"
         >
           Edit Note
